@@ -12,8 +12,19 @@ size_t miss_histogram[600];
 size_t onlyreload(void* addr)
 {
   size_t time = rdtsc();
+  //printf("time: %zu ", time);  
   maccess(addr);
   size_t delta = rdtsc() - time;
+
+  // char *p = (char *)addr;
+
+  // int x = p[0];
+
+  // char first_byte = p[0];
+  // char second_byte = p[1];
+
+  //printf("detla: %zu\n", delta);
+  //fflush(stdout);
   return delta;
 }
 
@@ -28,14 +39,22 @@ size_t flushandreload(void* addr)
 
 int main(int argc, char** argv)
 {
+  printf("%lu\n", sizeof(size_t));
+
   memset(array,-1,5*1024*sizeof(size_t));
   maccess(array + 2*1024);
   sched_yield();
-  for (int i = 0; i < 12*1024*1024; ++i)
+  for (int i = 0; i < 12*1024*1024; ++i) //12*1024*1024
   {
-    size_t d = onlyreload(array+2*1024);
+    size_t d = onlyreload(array+2*1024); // array 5120 + 2048 ?= 
+    //printf("d: %lu " , d);
+    //printf("i: %d " , i);
     hit_histogram[MIN(599,d)]++;
   }
+
+  // flush(array+2*1024);
+  // return 0;
+
   flush(array+1024);
   for (int i = 0; i < 12*1024*1024; ++i)
   {

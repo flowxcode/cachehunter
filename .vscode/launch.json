@@ -13,7 +13,7 @@
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
-            "externalConsole": false,
+            "externalConsole": false, // 1st try of printf via debug
             "MIMode": "gdb",
             "setupCommands": [
                 {
